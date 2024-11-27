@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./utils/db.connect";
+import AuthRouter from "./router/auth.routes";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -17,22 +18,7 @@ app.use(cors({
 }));
 
 // Routes
-app.get("/", (req, res) => {
-  res.status(200).send({
-    message: "Welcome to the API",
-    status: 200,
-    data: [
-      {
-        name: "John Doe",
-        age: 30,
-      },
-      {
-        name: "Jane Doe",
-        age: 25,
-      },
-    ],
-  });
-});
+app.use("/api/auth", AuthRouter);
 
 // Start the server
 app.listen(PORT, () => {
