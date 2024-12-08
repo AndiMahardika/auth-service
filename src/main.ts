@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./utils/db.connect";
 import AuthRouter from "./router/auth.routes";
 import cookieParser from "cookie-parser"
+import AdminRoutes from "./router/admin.routes";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ app.use(cookieParser())
 
 // Routes
 app.use("/api/auth", AuthRouter);
+app.use("/api/users", AdminRoutes);
 
 // Start the server
 app.listen(PORT, () => {

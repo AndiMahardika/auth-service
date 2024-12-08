@@ -1,0 +1,29 @@
+### GET ALL USERS
+GET http://localhost:8000/api/users
+
+### UPDATE USER ROLE
+PATCH http://localhost:8000/api/users/role/673d57636fb6970b031962e3
+Content-Type: application/json
+
+{
+  "role": "admin"
+}
+
+### DELETE USER 
+DELETE  http://localhost:8000/api/users/673d57636fb6970b031962e3
+
+### FIND USER by Email
+POST http://localhost:8000/api/users/find
+Content-Type: application/json
+
+{
+  "email": "user@gmail.com"
+}
+
+### FIND USER by Id
+POST http://localhost:8000/api/users/find
+Content-Type: application/json
+
+{
+  "id" : "673d57636fb6970b031962e3"
+}
