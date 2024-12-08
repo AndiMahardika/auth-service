@@ -48,6 +48,28 @@ const AuthController = {
         res.status(500).json({ message: "Internal server error" });
       }
     }
+  },
+
+  handleLogout: async (req: Request, res: Response) => {
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) {
+      res.status(401).json({ message: "Unauthorized: Refresh token is missing" });
+      return;
+    }
+
+    try {
+      await AuthService.logoutUser(refreshToken)
+      res.status(200)
+        .clearCookie('refreshToken')
+        .json({ message: 'User logged out successfully' });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
   }
 };
 

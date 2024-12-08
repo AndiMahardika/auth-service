@@ -7,5 +7,6 @@ const AuthRouter = express.Router();
 AuthRouter.post('/register', AuthController.handleUserRegister)
 AuthRouter.post('/login', AuthController.handleUserLogin)
 AuthRouter.patch('/update/:id', AuthMiddleware, AuthController.handleUserUpdate)
+AuthRouter.delete('/logout', AuthController.handleLogout)
 
 export default AuthRouter

@@ -111,6 +111,14 @@ const AuthService = {
     } catch (error) {
       console.log(error)
     }
+  },
+
+  logoutUser: async (refreshToken: string) => {
+    try {
+      await RefreshTokenRepository.deleteRefreshToken(refreshToken)
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
