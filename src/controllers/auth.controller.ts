@@ -21,9 +21,10 @@ const AuthController = {
     const { email, password } = req.body;
     try {
       const token = await AuthService.loginUser(email, password)
-      const { accessToken } = token;
+      const { accessToken, refreshToken } = token;
 
       res.status(200)
+        .cookie('refreshToken', refreshToken, { httpOnly: true })
         .json({ message: 'User logged in successfully', accessToken });
     } catch (error) {
       if (error instanceof Error) {

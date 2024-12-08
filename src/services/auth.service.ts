@@ -1,3 +1,4 @@
+import RefreshTokenRepository from "../repositories/refreshToken.repository";
 import UserRepository from "../repositories/user.repository";
 import { IUser, IUserUpdate } from "../types/user.entities";
 import bcrypt from "bcrypt"
@@ -53,7 +54,7 @@ const AuthService = {
       }
     
       const payload = {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
         role: user.role
@@ -61,10 +62,31 @@ const AuthService = {
 
       const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET_KEY as string, { 
         expiresIn: process.env.JWT_ACCESS_EXPIRATION
-       })
+      })
+
+      const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET_KEY as string, {
+        expiresIn: process.env.JWT_REFRESH_EXPIRATION
+      })
+
+      // save refresh token to database
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 7); // Set expiry to 7 days
+
+      try {
+        // Save refresh token to the database
+        await RefreshTokenRepository.createRefreshToken({
+          userId: user.id,
+          refreshToken,
+          expiresAt,
+        });
+      } catch (error) {
+        console.error("Error saving refresh token:", error);
+        throw new Error("Failed to save refresh token. Please try again.");
+      }
 
       const token = {
-        accessToken
+        accessToken,
+        refreshToken
       }
   
       return token;
