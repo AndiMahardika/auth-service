@@ -1,6 +1,7 @@
 import UserRepository from "../repositories/user.repository";
 import { IUser, IUserUpdate } from "../types/user.entities";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 const AuthService = {
   registerUser: async (userData: IUser) => {
@@ -50,8 +51,21 @@ const AuthService = {
       if (!isPasswordValid) {
         throw new Error("Invalid Credentials");
       }
+    
+      const payload = {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+
+      const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET_KEY as string, { expiresIn: "120s" })
+
+      const token = {
+        accessToken
+      }
   
-      return user;
+      return token;
     } catch (error) {
       throw error
     }

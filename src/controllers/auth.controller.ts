@@ -20,8 +20,10 @@ const AuthController = {
   handleUserLogin: async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
-      const user = await AuthService.loginUser(email, password)
-      res.status(200).json({ message: 'User logged in successfully', user });
+      const token = await AuthService.loginUser(email, password)
+      res.status(200)
+        .cookie ('token', token, { httpOnly: true })
+        .json({ message: 'User logged in successfully' });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
