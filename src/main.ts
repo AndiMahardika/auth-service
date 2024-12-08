@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./utils/db.connect";
+import AuthRouter from "./router/auth.routes";
+import cookieParser from "cookie-parser"
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -15,24 +17,10 @@ app.use(cors({
   origin: `http://localhost:${PORT}`,
   credentials: true
 }));
+app.use(cookieParser())
 
 // Routes
-app.get("/", (req, res) => {
-  res.status(200).send({
-    message: "Welcome to the API",
-    status: 200,
-    data: [
-      {
-        name: "John Doe",
-        age: 30,
-      },
-      {
-        name: "Jane Doe",
-        age: 25,
-      },
-    ],
-  });
-});
+app.use("/api/auth", AuthRouter);
 
 // Start the server
 app.listen(PORT, () => {
