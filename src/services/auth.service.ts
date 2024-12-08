@@ -59,7 +59,9 @@ const AuthService = {
         role: user.role
       }
 
-      const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET_KEY as string, { expiresIn: "120s" })
+      const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET_KEY as string, { 
+        expiresIn: process.env.JWT_ACCESS_EXPIRATION
+       })
 
       const token = {
         accessToken

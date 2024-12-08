@@ -24,8 +24,7 @@ const AuthController = {
       const { accessToken } = token;
 
       res.status(200)
-        .cookie ('accessToken', accessToken, { httpOnly: true })
-        .json({ message: 'User logged in successfully' });
+        .json({ message: 'User logged in successfully', accessToken });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
